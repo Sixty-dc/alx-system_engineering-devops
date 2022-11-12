@@ -1,27 +1,30 @@
 #!/usr/bin/env bash
-# This script is managing manage_my_process.
+# Manages the program called manage_my_process
 
-start() {
-	./manage_my_process &
-	echo $$ >/var/run/my_process.pid
-	if [ "$1" -eq 1 ]; then echo "manage_my_process started"; fi
+FILE="/var/run/my_process.pid"
+
+create()
+{
+    sudo touch $FILE
+    sudo bash -c "echo $$ > $FILE"
 }
 
-stop() {
-	kill "$(pgrep -f './manage_my_process')"
-	rm -f /var/run/my_process.pid
-	if [ "$1" -eq 1 ]; then echo "manage_my_process stopped"; fi
-}
+if [ "$1" == "start" ]; then
+    create
+    ./manage_my_process &
+    echo "manage_my_process started"
 
-restart() {
-	stop 0
-	start 0
-	echo "manage_my_process restarted"
-}
+elif [ "$1" == "stop" ]
+then
+    [ -e "/var/run/my_process.pid" ] && sudo pkill -f "./manage_my_process" && rm /var/run/my_process.pid
+    echo "manage_my_process stopped"
 
-case "$1" in
-start) start 1 ;;
-stop) stop 1 ;;
-restart) restart ;;
-*) echo "Usage: manage_my_process {start|stop|restart}" ;;
-esac
+elif [ "$1" == "restart" ]
+then
+    $0 stop >& /dev/null
+    $0 start >& /dev/null
+    echo "manage_my_process restarted"
+
+else
+    echo "Usage: manage_my_process {start|stop|restart}"
+fi
