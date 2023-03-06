@@ -218,3 +218,5 @@ Try reloading your web pages. Do it with F2 or Ctrl+F5
  Clear the cache of your browsers.
 Delete all browser cookies.
 You can also contact the website admin to let them know
+https://www.wpoven.com/blog/500-internal-server-error/#:~:text=Fixes%20of%20500%20Internal%20Server%20Error%20Step%201%3A,to%20browser%20history%20and%20clear%20the%20browser%20cache.
+
